@@ -1,0 +1,21 @@
+class Solution {
+    public List<List<Integer>> combinationSum(int[] arr, int tar) {
+     Set<List<Integer>> ans=new HashSet<>();
+        List<Integer> combin=new ArrayList<>();
+        combSum(arr,0,ans,combin,tar);
+        return new ArrayList<>(ans);
+    }
+    private void combSum(int[] arr,int i, Set<List<Integer>> ans, List<Integer> combin,int tar){
+        if(i==arr.length||tar<0) return;
+        if(tar==0) {
+                ans.add(new ArrayList<>(combin));
+                return;
+        }
+        combin.add(arr[i]);
+        combSum(arr,i+1,ans,combin,tar-arr[i]);
+        combSum(arr,i,ans,combin,tar-arr[i]);
+        combin.remove(combin.size()-1);
+        combSum(arr,i+1,ans,combin,tar);
+
+    }
+}
