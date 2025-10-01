@@ -1,0 +1,12 @@
+class Solution {
+    public int numWaterBottles(int num, int Exchange) {
+        int ans=num;
+        int empty=num;
+        while(empty>=Exchange){
+            int candrk=empty/Exchange;
+            ans+=candrk;
+            empty=empty%Exchange+candrk;
+        }
+        return ans;
+    }
+}
