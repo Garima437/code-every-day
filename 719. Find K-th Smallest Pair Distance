@@ -1,0 +1,26 @@
+class Solution {
+    public int smallestDistancePair(int[] nums, int k) {
+        int n=nums.length;
+        Arrays.sort(nums);
+        int st=0,end=nums[n-1]-nums[0];
+        while(st<end){
+            int mid=(st+end)/2;
+            int count=countPair(nums,mid);
+            if(count>=k){
+                end=mid;
+            }else{
+                st=mid+1;
+            }
+        }
+        return st;
+    }
+    private int countPair(int[] nums,int mid){
+        int i=0;
+        int cnt=0;
+        for(int j=0;j<nums.length;j++){
+            while(nums[j]-nums[i]>mid) i++;
+            cnt+=j-i;
+        }
+        return cnt;
+    }
+}
