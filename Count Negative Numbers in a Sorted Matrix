@@ -1,0 +1,24 @@
+class Solution {
+    public int countNegatives(int[][] grid) {
+        int cnt=0;
+        int n=grid.length;
+        for(int i=0;i<n;i++){
+            cnt+=helper(grid[i]);
+        }
+        return cnt;
+    }
+    private int  helper(int[] grid){
+        int n=grid.length;
+        
+        int st=0,end=n-1;
+        while(st<=end){
+            int mid=st+(end-st)/2;
+            if(grid[mid]>=0){
+                st=mid+1;
+            }else {
+                end=mid-1;
+            }
+        }
+        return n-st;
+    }
+}
