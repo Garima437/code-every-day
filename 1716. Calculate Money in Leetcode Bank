@@ -1,0 +1,13 @@
+class Solution {
+    public int totalMoney(int n) {
+        int w=n/7;
+        int d=n%7;
+        int total=0;
+        total+=28*w+7*(w*(w-1))/2;
+        int s=1+w;
+        for(int i=0;i<d;i++){
+            total+=s+i;
+        }
+        return total;
+    }
+}
