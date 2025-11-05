@@ -1,0 +1,52 @@
+import java.util.*;
+
+class Solution {
+    public int[] findXSum(int[] nums, int k, int x) {
+        int n = nums.length;
+        int[] ans = new int[n - k + 1];
+
+        Map<Integer, Integer> freq = new HashMap<>(); // frequency map
+        PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> {
+            if (a[1] == b[1]) return b[0] - a[0]; // if freq same, larger val first
+            return b[1] - a[1]; // higher freq first
+        });
+
+        // Build first window
+        for (int i = 0; i < k; i++) {
+            freq.put(nums[i], freq.getOrDefault(nums[i], 0) + 1);
+        }
+
+        ans[0] = computeXSum(freq, x, pq);
+
+        // Sliding window
+        for (int i = k; i < n; i++) {
+            // remove left element
+            int left = nums[i - k];
+            freq.put(left, freq.get(left) - 1);
+            if (freq.get(left) == 0) freq.remove(left);
+
+            // add right element
+            freq.put(nums[i], freq.getOrDefault(nums[i], 0) + 1);
+
+            ans[i - k + 1] = computeXSum(freq, x, pq);
+        }
+
+        return ans;
+    }
+
+    private int computeXSum(Map<Integer, Integer> freq, int x, PriorityQueue<int[]> pq) {
+        pq.clear();
+        for (Map.Entry<Integer, Integer> e : freq.entrySet()) {
+            pq.offer(new int[]{e.getKey(), e.getValue()});
+        }
+
+        int cnt = 0;
+        int sum = 0;
+        while (!pq.isEmpty() && cnt < x) {
+            int[] top = pq.poll();
+            sum += top[0] * top[1];
+            cnt++;
+        }
+        return sum;
+    }
+}
