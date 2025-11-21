@@ -1,0 +1,20 @@
+class Solution {
+    public int[] smallerNumbersThanCurrent(int[] nums) {
+        HashMap<Integer,Integer> mp=new HashMap<>();
+        for(int i:nums){
+            mp.put(i,mp.getOrDefault(i,0)+1);
+        }
+        int n=nums.length;
+        int[] ans=new int[n];
+
+        for(int i=0;i<n;i++){
+            int search=nums[i];
+            int cnt=0;
+            for(int key:mp.keySet()){
+                if(key<search) cnt+=mp.get(key);
+            }
+            ans[i]=cnt;
+        }
+        return ans;
+    }
+}
