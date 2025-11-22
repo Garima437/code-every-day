@@ -1,0 +1,46 @@
+class Solution {
+    static class DSU{
+        int[] parent;
+        int[] rank;
+        DSU(int n){
+            parent=new int[n];
+            rank=new int[n];
+            for(int i=0;i<n;i++) parent[i]=i;
+        }
+        int find(int x){
+            if(parent[x]==x) return x;
+            return parent[x]=find(parent[x]);
+        }
+        void union(int a,int b){
+            int pa=find(a);
+            int pb=find(b);
+            if(rank[pa]==rank[pb]){
+                parent[pb]=pa;
+                rank[pa]++;
+            }else if(rank[pa]<rank[pb]){
+                parent[pa]=pb;
+            }else {
+                parent[pb]=pa;
+            }
+        }
+    }
+    public int makeConnected(int n, int[][] mat) {
+        int exedges=0;
+        int m=mat.length;
+        DSU ds=new DSU(n);
+        for(int i=0;i<m;i++){
+            int u=mat[i][0];
+            int v=mat[i][1];
+            if(ds.find(u)==ds.find(v)) exedges++;
+            else ds.union(u,v);
+        }
+        int cntC=0;
+        for(int i=0;i<n;i++){
+            if(ds.parent[i]==i) cntC++;
+        }
+        int ans=cntC-1;
+        if(exedges>=ans) return ans;
+        return -1;
+    }
+
+}
