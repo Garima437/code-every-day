@@ -1,0 +1,83 @@
+class Solution {
+
+    class DSU {
+        int[] parent, size;
+
+        DSU(int n) {
+            parent = new int[n];
+            size = new int[n];
+            for (int i = 0; i < n; i++) {
+                parent[i] = i;
+                size[i] = 1;
+            }
+        }
+
+        int find(int x) {
+            if (parent[x] == x) return x;
+            return parent[x] = find(parent[x]);
+        }
+
+        void union(int a, int b) {
+            int pa = find(a);
+            int pb = find(b);
+            if (pa == pb) return;
+
+            if (size[pa] < size[pb]) {
+                parent[pa] = pb;
+                size[pb] += size[pa];
+            } else {
+                parent[pb] = pa;
+                size[pa] += size[pb];
+            }
+        }
+    }
+
+    public int largestIsland(int[][] grid) {
+        int n = grid.length;
+        DSU ds = new DSU(n * n);
+        int[][] dirs = {{1,0},{-1,0},{0,1},{0,-1}};
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+
+                if (grid[i][j] == 1) {
+                    int id = i * n + j;
+                    for (int[] d : dirs) {
+                        int ni = i + d[0], nj = j + d[1];
+                        if (ni>=0 && nj>=0 && ni<n && nj<n && grid[ni][nj]==1) {
+                            ds.union(id, ni*n + nj);
+                        }
+                    }
+                }
+            }
+        }
+
+        int maxIsland = 0;
+        for (int i = 0; i < n*n; i++) {
+            if (ds.find(i) == i) {
+                maxIsland = Math.max(maxIsland, ds.size[i]);
+            }
+        }
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+
+                if (grid[i][j] == 0) {
+                    HashSet<Integer> set = new HashSet<>();
+                    int newSize = 1;  
+                    for (int[] d : dirs) {
+                        int ni = i + d[0], nj = j + d[1];
+                        if (ni>=0 && nj>=0 && ni<n && nj<n && grid[ni][nj]==1) {
+                            int parent = ds.find(ni*n + nj);
+                            if (!set.contains(parent)) {
+                                newSize += ds.size[parent];
+                                set.add(parent);
+                            }
+                        }
+                    }
+
+                    maxIsland = Math.max(maxIsland, newSize);
+                }
+            }
+        }
+        return maxIsland;
+    }
+}
