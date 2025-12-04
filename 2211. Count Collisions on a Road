@@ -1,0 +1,15 @@
+class Solution {
+    public int countCollisions(String str) {
+        int n=str.length();
+        int l=0;
+        int r=n-1;
+        while(l<n&&str.charAt(l)=='L') l++;
+        while(r>=0&&str.charAt(r)=='R') r--;
+        int ans=0;
+        // if(l>r) return 0;
+        for(int i=l;i<=r;i++){
+            if(str.charAt(i)!='S') ans++;
+        }
+        return ans;
+    }
+}
