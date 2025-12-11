@@ -1,0 +1,28 @@
+class Solution {
+    public int countCoveredBuildings(int n, int[][] buildings) {
+        Map<Integer, int[]> rl = new HashMap<>(); 
+        Map<Integer, int[]> cl = new HashMap<>(); 
+        for (int[] b :buildings ) {
+            int x = b[0], y = b[1];
+            rl.putIfAbsent(x, new int[]{y, y});
+            rl.get(x)[0] = Math.min(rl.get(x)[0], y);
+            rl.get(x)[1] = Math.max(rl.get(x)[1], y);
+            cl.putIfAbsent(y, new int[]{x, x});
+            cl.get(y)[0] = Math.min(cl.get(y)[0], x);
+            cl.get(y)[1] = Math.max(cl.get(y)[1], x);
+        }
+        int res = 0;
+        for (int[] b : buildings) {
+            int x = b[0], y = b[1];
+
+            int minY = rl.get(x)[0], maxY = rl.get(x)[1];
+            int minX = cl.get(y)[0], maxX = cl.get(y)[1];
+
+            if (minY < y && y < maxY && minX < x && x < maxX) {
+                res++;
+            }
+        }
+
+        return res;
+    }
+}
