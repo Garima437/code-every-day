@@ -1,0 +1,27 @@
+class Solution {
+    public String reverseWords(String s) {
+       String[] word=s.split(" ");
+        int f=countV(word[0]);
+        StringBuilder sb=new StringBuilder();
+        sb.append(word[0]);
+        for(int i=1;i<word.length;i++){
+            sb.append(" ");
+            if(countV(word[i])==f){
+                sb.append(new StringBuilder(word[i]).reverse());
+            }else{
+                sb.append(word[i]);
+            }
+        }
+        return sb.toString();
+       
+    }
+    private int countV(String s){
+        int n=s.length();
+        int cnt=0;
+        for(int i=0;i<n;i++){
+            char ch=s.charAt(i);
+            if(ch=='a'||ch=='e'||ch=='i'||ch=='o'||ch=='u') cnt++;
+        }
+        return cnt;
+    }
+}
