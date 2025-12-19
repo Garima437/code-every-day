@@ -1,0 +1,40 @@
+class Solution {
+    int[][][] dp;
+    public int cherryPickup(int[][] grid) {
+        int n = grid.length;
+        int m = grid[0].length;
+        dp = new int[n][m][n];
+        for (int[][] a : dp)
+            for (int[] b : a)
+                java.util.Arrays.fill(b, -1);
+
+        return Math.max(0, helper(grid, 0, 0, 0, n, m));
+    }
+
+    private int helper(int[][] arr, int i1, int j1, int i2, int n, int m) {
+        int j2 = i1 + j1 - i2;
+        if (i1 >= n || j1 >= m || i2 >= n || j2 >= m) return -1000000;
+        if (arr[i1][j1] == -1 || arr[i2][j2] == -1) return -1000000;
+        if (i1 == n - 1 && j1 == m - 1)  return arr[i1][j1];
+        if (dp[i1][j1][i2] != -1) return dp[i1][j1][i2];
+        int cherries = 0;
+        if (i1 == i2 && j1 == j2)
+            cherries += arr[i1][j1];
+        else
+            cherries += arr[i1][j1] + arr[i2][j2];
+
+        int best = Math.max(
+                Math.max(
+                        helper(arr, i1 + 1, j1, i2 + 1, n, m),
+                        helper(arr, i1, j1 + 1, i2, n, m)
+                ),
+                Math.max(
+                        helper(arr, i1 + 1, j1, i2, n, m),
+                        helper(arr, i1, j1 + 1, i2 + 1, n, m)
+                )
+        );
+        cherries += best;
+        dp[i1][j1][i2] = cherries;
+        return cherries;
+    }
+}
