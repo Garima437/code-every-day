@@ -1,0 +1,25 @@
+class Solution {
+    public int minLength(int[] nums, int k) {
+        int[] temp=nums;
+        HashMap<Integer,Integer> mp=new HashMap<>();
+        int i=0;
+        int distsum=0;
+        int res=Integer.MAX_VALUE;
+        for(int j=0;j<temp.length;j++){
+            mp.put(temp[j],mp.getOrDefault(temp[j],0)+1);
+            if(mp.get(temp[j])==1){
+                distsum+=temp[j];
+            }
+            while(distsum>=k){
+                res=Math.min(res,j-i+1);
+                mp.put(temp[i],mp.get(temp[i])-1);
+            
+            if(mp.get(temp[i])==0){
+              distsum-=temp[i];   
+            }
+            i++;
+            }
+        }
+        return res==Integer.MAX_VALUE?-1:res;
+    }
+}©leetcode
