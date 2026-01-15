@@ -1,0 +1,20 @@
+class Solution {
+    public boolean canCross(int[] stones) {
+      int n=stones.length;
+      HashMap<Integer,HashSet<Integer>>mp=new HashMap<>();
+      for(int s:stones){
+        mp.put(s,new HashSet<Integer>);
+      }
+      mp.get(0).add(0);
+      for(int s:stones){
+        for(int k:mp.get(s)){
+          for(int step=k;step<=k+1;step++){
+            if(step>0&&mp.containskey(step+s)){
+              mp.get(step+s).add(step);
+            }
+          }
+        }
+      }
+    return !mp.get(stones[n-1]).isEmpty;
+  }
+}
