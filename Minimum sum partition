@@ -1,0 +1,37 @@
+// User function Template for Java
+
+class Solution {
+
+    public int minDifference(int arr[]) {
+        // Your code goes here
+        int n=arr.length;
+        int tsum=0;
+        for (int x : arr) tsum += x;
+
+        boolean[][] dp = new boolean[n][tsum + 1];
+
+        for (int i = 0; i < n; i++) {
+            dp[i][0] = true;
+        }
+
+        if (arr[0] <= tsum) dp[0][arr[0]] = true;
+        for(int i=1;i<n;i++){
+            for(int tar=1;tar<=tsum;tar++){
+                boolean nottake=dp[i-1][tar];
+                boolean take=false;
+                if(arr[i]<=tar) take=dp[i-1][tar-arr[i]];
+                dp[i][tar]=take||nottake;
+            }
+        }
+        int mini=Integer.MAX_VALUE;
+        for(int i=0;i<=tsum/2;i++){
+            if(dp[n-1][i]){
+                int s1=i;
+                int s2=tsum-i;
+                mini=Math.min(mini,Math.abs(s2-s1));
+            }
+        }
+        return mini;
+        
+    }
+}
