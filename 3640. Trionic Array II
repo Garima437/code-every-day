@@ -1,0 +1,49 @@
+class Solution{
+  long NEG=-100000000000000L;
+  long f(int idx,int status,int[]nums){
+   if(idx==nums.length){
+      return status==3?0:NEG;
+  }
+  long take=NEG;
+  long nottake= NEG;
+  if(status==0){
+   nottake = f(idx+1,0,nums);
+  }
+  if(status==3){
+    take=nums[idx];
+  }
+  if(idx+1<n){
+    if (status == 0 && nums[idx + 1] > nums[idx]) {
+                take = Math.max(take, nums[idx] + f(idx + 1, 1, n, nums,dp));
+            } 
+            else if (status == 1) {
+                if (nums[index + 1] > nums[index]) {
+                    take = Math.max(take, nums[index] + f(index + 1, 1, n, nums,dp));
+                } else if (nums[index + 1] < nums[index]) {
+                    take = Math.max(take, nums[index] + f(index + 1, 2, n, nums,dp));
+                }
+            } 
+            else if (status == 2) {
+                if (nums[index + 1] < nums[index]) {
+                    take = Math.max(take, nums[index] + f(index + 1, 2, n, nums,dp));
+                } else if (nums[index + 1] > nums[index]) {
+                    take = Math.max(take, nums[index] + f(index + 1, 3, n, nums,dp));
+                }
+            } 
+            else if (status == 3 && nums[index + 1] > nums[index]) {
+                take = Math.max(take, nums[index] + f(index + 1, 3, n, nums,dp));
+            }
+        }
+
+        return dp[index][status]=Math.max(take, notTake);
+    }
+
+    public long maxSumTrionic(int[] nums) {
+        int n=nums.length;
+        long[][] dp=new long[n][4];
+        for(long[] i:dp){
+            Arrays.fill(i,-1);
+        }
+        return f(0, 0, nums.length, nums,dp);
+    }
+}
