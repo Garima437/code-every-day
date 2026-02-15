@@ -1,0 +1,24 @@
+class Solution {
+    public long rob(int[] nums, int[] colors) {
+        int n=nums.length;
+        long[] dp=new long[n];
+        
+          Arrays.fill(dp,-1);  
+        
+        return f(n-1,nums,colors,dp);
+        
+    }
+    private long f(int i,int[] arr,int[] col,long[] dp){
+        if(i<0) return 0;
+        if(i==0) return arr[0];
+        if(dp[i]!=-1) return dp[i];
+        long nottake=f(i-1,arr,col,dp);
+        long take;
+        if(col[i]!=col[i-1]){
+            take=arr[i]+f(i-1,arr,col,dp);
+        }else{
+            take=arr[i]+f(i-2,arr,col,dp);
+        }
+        return dp[i]=Math.max(take,nottake);
+    }
+}
