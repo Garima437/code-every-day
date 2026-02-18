@@ -1,0 +1,14 @@
+class Solution {
+    public boolean hasAlternatingBits(int n) {
+        int preLSB=-1;
+        while(n>0){
+            int currLSB=n&1;
+            if(preLSB==currLSB) return false;
+            preLSB=currLSB;
+            n=n>>1;
+            
+
+        }
+        return true;
+    }
+}
