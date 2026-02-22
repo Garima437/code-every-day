@@ -1,0 +1,21 @@
+class Solution {
+    public int binaryGap(int n) {
+        int pre=-1;
+        int idx=0;
+        int maxi=0;
+        while(n!=0){
+            int lsb=n&1;
+            
+            if(lsb==1){
+                if(pre!=-1){
+                    maxi=Math.max(maxi,idx-pre);
+                }
+                pre=idx;
+            }
+            
+            n=n>>1;
+            idx++;
+        }
+        return maxi;
+    }
+}
