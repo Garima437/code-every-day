@@ -1,0 +1,33 @@
+class Solution {
+    static int mod=1_000_000_007;
+    Integer[][][] dp;
+    public int numberOfStableArrays(int zero, int one, int limit) {
+        dp = new Integer[zero + 1][one + 1][2];
+
+        int swz= f(zero, one, limit, 0);
+        int swo= f(zero, one, limit, 1);
+
+        return (swz+swo) % mod;
+    }
+    private int f(int z, int o, int limit, int prev) {
+
+        if (z == 0 && o == 0) return 1;
+
+        if (dp[z][o][prev] != null) return dp[z][o][prev];
+
+        long res = 0;
+
+        if (prev == 0) {
+            for (int i = 1; i <= Math.min(z, limit); i++) {
+                res = (res + f(z - i, o, limit, 1)) % mod;
+            }
+        } 
+        else {
+            for (int i = 1; i <= Math.min(o, limit); i++) {
+                res = (res + f(z, o - i, limit, 0)) % mod;
+            }
+        }
+
+        return dp[z][o][prev] = (int) res;
+    }
+}
