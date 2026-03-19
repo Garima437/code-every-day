@@ -1,0 +1,30 @@
+class Solution {
+    public int numberOfSubmatrices(char[][] grid) {
+        int n=grid.length;
+        int m=grid[0].length;
+        int cnt=0;
+        int[][] cumX=new int[n][m];
+        int[][] cumY =new int[n][m];
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                cumX[i][j]=(grid[i][j]=='X')?1:0;
+                cumY[i][j]=(grid[i][j]=='Y')?1:0;
+                if(i>0){
+                    cumX[i][j] += cumX[i-1][j];
+                    cumY[i][j] += cumY[i-1][j];
+
+                }
+                if(j>0){
+                    cumX[i][j] += cumX[i][j-1];
+                    cumY[i][j] += cumY[i][j-1];
+                }
+                if(i>0&&j>0){
+                    cumX[i][j] -= cumX[i-1][j-1];
+                    cumY[i][j] -= cumY[i-1][j-1];
+                }
+                if(cumX[i][j]==cumY[i][j]&&cumX[i][j]>0) cnt++;
+            }
+        }
+        return cnt;
+    }
+}
