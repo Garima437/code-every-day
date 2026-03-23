@@ -1,0 +1,55 @@
+class Solution {
+    public int maxProductPath(int[][] grid) {
+
+        int n = grid.length;
+        int m = grid[0].length;
+
+        long[][] maxDp = new long[n][m];
+        long[][] minDp = new long[n][m];
+
+        maxDp[0][0] = grid[0][0];
+        minDp[0][0] = grid[0][0];
+
+        for (int i = 1; i < n; i++) {
+            maxDp[i][0] = maxDp[i - 1][0] * grid[i][0];
+            minDp[i][0] = maxDp[i][0];
+        }
+
+        for (int j = 1; j < m; j++) {
+            maxDp[0][j] = maxDp[0][j - 1] * grid[0][j];
+            minDp[0][j] = maxDp[0][j];
+        }
+
+        for (int i = 1; i < n; i++) {
+            for (int j = 1; j < m; j++) {
+
+                long maxTop = maxDp[i - 1][j];
+                long minTop = minDp[i - 1][j];
+
+                long maxLeft = maxDp[i][j - 1];
+                long minLeft = minDp[i][j - 1];
+
+                long val = grid[i][j];
+
+                long maxVal = Math.max(
+                        Math.max(maxTop * val, minTop * val),
+                        Math.max(maxLeft * val, minLeft * val)
+                );
+
+                long minVal = Math.min(
+                        Math.min(maxTop * val, minTop * val),
+                        Math.min(maxLeft * val, minLeft * val)
+                );
+
+                maxDp[i][j] = maxVal;
+                minDp[i][j] = minVal;
+            }
+        }
+
+        long result = maxDp[n - 1][m - 1];
+
+        if (result < 0) return -1;
+
+        return (int)(result % 1000000007);
+    }
+}
