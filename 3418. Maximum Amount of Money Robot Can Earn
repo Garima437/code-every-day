@@ -1,0 +1,48 @@
+
+
+class Solution {
+    public int maximumAmount(int[][] coins) {
+        int n = coins.length;
+        int m = coins[0].length;
+    
+        int[][][] dp = new int[n][m][3];
+        for (int[][] layer : dp) {
+            for (int[] row : layer) {
+                Arrays.fill(row, Integer.MIN_VALUE);
+            }
+        }
+        return fun(coins, dp, 2, 0, 0);
+    }
+
+    private int fun(int[][] arr, int[][][] dp, int neu, int i, int j) {
+        int n = arr.length;
+        int m = arr[0].length;
+
+    
+        if (i == n - 1 && j == m - 1) {
+            int currentVal = arr[i][j];
+      
+            if (currentVal < 0 && neu > 0) return 0;
+            return currentVal;
+        }
+
+
+        if (i >= n || j >= m) return (int) -1e9; 
+
+
+        if (dp[i][j][neu] != Integer.MIN_VALUE) return dp[i][j][neu];
+
+        int moveRight = arr[i][j] + fun(arr, dp, neu, i, j + 1);
+        int moveDown = arr[i][j] + fun(arr, dp, neu, i + 1, j);
+        int res = Math.max(moveRight, moveDown);
+
+     
+        if (arr[i][j] < 0 && neu > 0) {
+            int neutRight = 0 + fun(arr, dp, neu - 1, i, j + 1);
+            int neutDown = 0 + fun(arr, dp, neu - 1, i + 1, j);
+            res = Math.max(res, Math.max(neutRight, neutDown));
+        }
+
+        return dp[i][j][neu] = res;
+    }
+}
