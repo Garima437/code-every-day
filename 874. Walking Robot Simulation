@@ -1,0 +1,34 @@
+class Solution {
+    public int robotSim(int[] commands, int[][] obstacles) {
+        HashSet<String> bloc=new HashSet<>();
+        for(int[] o:obstacles){
+            bloc.add(o[0]+ ","+o[1]);
+        }
+        int[][] dir={
+            {0,1},{1,0},{0,-1},{-1,0}
+        };
+        int x=0,y=0;
+        int d=0;
+        int maxi=0;
+        for(int i:commands){
+            if(i==-1){
+                d=(d+1)%4;
+            }else if(i==-2){
+               
+                    d=(d+3)%4;
+                
+            }
+            else{
+                while(i-- >0){
+                    int nx=x+dir[d][0];
+                    int ny =y+dir[d][1];
+                    if(bloc.contains(nx+ "," +ny)) break;
+                    x=nx;
+                    y=ny;
+                    maxi=Math.max(maxi,x*x+y*y);
+                }
+            }
+        }
+        return maxi;
+    }
+}
