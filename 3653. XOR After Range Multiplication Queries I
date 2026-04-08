@@ -1,0 +1,21 @@
+class Solution {
+    int mod = 1_000_000_007;
+    public int xorAfterQueries(int[] nums, int[][] queries) {
+        int ans=0;
+        for(int[] i:queries){
+            int l=i[0];
+            int r=i[1];
+            int k=i[2];
+            long v=i[3];
+            int idx=l;
+            while(idx<=r){
+                nums[idx]=(int)(((long)nums[idx]*v)%mod);
+                idx+=k;
+            }
+        }
+        for(int i=0;i<nums.length;i++){
+            ans=ans^nums[i];
+        }
+        return ans;
+    }
+}
